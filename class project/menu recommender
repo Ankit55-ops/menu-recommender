@@ -1,0 +1,146 @@
+
+MENU_DATA = {
+    "Indian": {
+        "Veg": {
+            "Spicy": ["Paneer Tikka Masala", "Aloo Gobi", "Chana Masala", "Bhindi Masala"],
+            "Mild": ["Dal Makhani", "Malai Kofta", "Navratan Korma", "Paneer Butter Masala"],
+            "Salty": ["Aloo Paratha", "Poha", "Samosa", "Kachori"],
+            "Cheesy": ["Paneer Tikka", "Cheese Naan", "Paneer 65"]
+        },
+        "Non-Veg": {
+            "Spicy": ["Chicken Tikka Masala", "Butter Chicken", "Chicken Vindaloo", "Mutton Curry"],
+            "Mild": ["Chicken Korma", "Mutton Rogan Josh", "Fish Curry", "Egg Curry"],
+            "Salty": ["Chicken Biryani", "Mutton Keema", "Egg Bhurji", "Chicken 65"],
+            "Cheesy": ["Chicken Cheese Naan", "Tandoori Chicken"]
+        },
+        "Vegan": {
+            "Spicy": ["Chana Masala", "Aloo Gobi", "Rajma", "Bhindi Masala"],
+            "Mild": ["Dal Tadka", "Vegetable Korma", "Black Dal", "Moong Dal"],
+            "Salty": ["Aloo Paratha", "Poha", "Samosa", "Kachori"]
+        }
+    },
+    "Nepali": {
+        "Veg": {
+            "Spicy": ["Aloo Tama", "Kwati", "Sukuti Veg", "Chana Aalu"],
+            "Mild": ["Dal Bhat Veg", "Saag Paneer", "Gundruk", "Rayo Ko Saag"],
+            "Salty": ["Sel Roti", "Aloo Sadheko", "Chhurpi", "Chiura"],
+            "Cheesy": ["Paneer Chili", "Cheese Momos"]
+        },
+        "Non-Veg": {
+            "Spicy": ["Chicken Chili", "Mutton Sukuti", "Chicken Choila", "Sekuwa"],
+            "Mild": ["Dal Bhat Chicken", "Khasi Ko Masu", "Fish Curry Nepali", "Egg Bhuteko"],
+            "Salty": ["Chicken Momos", "Buff Chilli", "Mutton Sadheko", "Yomari"],
+            "Cheesy": ["Cheese Chicken Momos", "Chicken Chili Cheese"]
+        },
+        "Vegan": {
+            "Spicy": ["Aloo Tama", "Kwati", "Sukuti Veg", "Chana Aalu"],
+            "Mild": ["Dal Bhat Veg", "Gundruk", "Rayo Ko Saag", "Sisnu Soup"],
+            "Salty": ["Sel Roti", "Aloo Sadheko", "Chiura", "Chhurpi"]
+        }
+    },
+    "Continental": {
+        "Veg": {
+            "Cheesy": ["Margherita Pizza", "Veg Lasagna", "Cheese Ravioli", "Grilled Cheese Sandwich"],
+            "Mild": ["Pesto Pasta", "Veg Alfredo Pasta", "Caprese Salad", "Mushroom Risotto"],
+            "Salty": ["Garlic Bread", "Bruschetta", "Minestrone Soup", "Veg Burger"],
+            "Spicy": ["Veg Mexican Wrap", "Spicy Potato Wedges", "Chilli Cheese Toast"]
+        },
+        "Non-Veg": {
+            "Cheesy": ["Chicken Pizza", "Chicken Lasagna", "Chicken Alfredo", "Cheese Steak"],
+            "Mild": ["Chicken Pesto Pasta", "Grilled Chicken Pasta", "Chicken Risotto", "Fish & Chips"],
+            "Salty": ["Chicken Wings", "Meatball Pasta", "Chicken Burger", "BBQ Ribs"],
+            "Spicy": ["Chicken Wings Spicy", "Buffalo Wings", "Mexican Chicken"]
+        },
+        "Vegan": {
+            "Mild": ["Pesto Pasta", "Veg Marinara Pasta", "Caprese Salad", "Veg Risotto"],
+            "Salty": ["Garlic Bread", "Bruschetta", "Minestrone Soup", "Veg Burger"],
+            "Spicy": ["Veg Mexican Wrap", "Spicy Potato Wedges", "Chilli Garlic Mushrooms"]
+        }
+    }
+}
+
+def get_valid_food_preference():
+    """Get and validate food preference input from user"""
+    while True:
+        pref = input("\nChoose food preference (Veg/Non-Veg/Vegan): ").strip().title()
+        if pref in ["Veg", "Non-Veg", "Vegan"]:
+            return pref
+        print(" Invalid choice! Please enter Veg, Non-Veg, or Vegan.")
+
+def get_valid_cuisine():
+    """Get and validate cuisine type input from user"""
+    cuisines = list(MENU_DATA.keys())
+    print(f"Available cuisines: {', '.join(cuisines)}")
+    while True:
+        cuisine = input("Choose cuisine: ").strip().title()
+        if cuisine in cuisines:
+            return cuisine
+        print(" Invalid cuisine! Please choose from available options.")
+
+def get_valid_taste(cuisine, food_pref):
+    """Get and validate taste preference based on available options"""
+    available_tastes = list(MENU_DATA[cuisine][food_pref].keys())
+    print(f"Available tastes for {cuisine} {food_pref}: {', '.join(available_tastes)}")
+    
+    while True:
+        taste = input("Choose taste preference: ").strip().title()
+        if taste in available_tastes:
+            return taste
+        print(" Invalid taste! Please choose from available options.")
+
+def get_customization():
+    """Get optional customization request from user"""
+    custom = input("\nAny special customization? (extra cheese, less oil, no onion, gluten-free) or Enter for none: ").strip()
+    return custom if custom else "None"
+
+def recommend_menu_items(cuisine, food_pref, taste, customization):
+    """Recommend 2-3 menu items based on user preferences"""
+    recommendations = MENU_DATA[cuisine][food_pref][taste]
+    
+    # Select 2-3 random items for variety
+    import random
+    num_items = min(3, len(recommendations))
+    selected_items = random.sample(recommendations, num_items)
+    
+    print("\n" + "═"*60)
+    print("  YOUR PERFECT MENU RECOMMENDATIONS")
+    print("═"*60)
+    print(f" Food Type: {food_pref}")
+    print(f" Cuisine: {cuisine}")
+    print(f" Flavor: {taste}")
+    print(f" Special Request: {customization}")
+    print("─"*60)
+    
+    for i, item in enumerate(selected_items, 1):
+        print(f"{i:2d}. **{item}**")
+        if customization != "None":
+            print(f"       With: {customization}")
+        print()
+    
+    print("═"*60)
+    print("Bon Appétit! 🇮🇳🇳🇵")
+    print("═"*60)
+
+def main():
+    """Main function to run the enhanced menu recommender system"""
+    print("🍴 Welcome to the Multi-Cuisine Menu Recommender! ")
+    print("Indian  | Nepali  | Continental \n")
+    
+    # Collect preferences step-by-step
+    food_pref = get_valid_food_preference()
+    cuisine = get_valid_cuisine()
+    taste = get_valid_taste(cuisine, food_pref)
+    customization = get_customization()
+    
+    # Generate personalized recommendations
+    recommend_menu_items(cuisine, food_pref, taste, customization)
+    
+    # Ask for another recommendation
+    again = input("\nWant another recommendation? (y/n): ").strip().lower()
+    if again == 'y':
+        print("\n" + "─"*60 + "\n")
+        main()
+
+# Start the program
+if __name__ == "__main__":
+    main()
